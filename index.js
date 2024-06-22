@@ -7,7 +7,26 @@ const port = 3000;
 
 let totalCorrect = 0;
 
+const db = new pg.Client({
+  user: "postgres",
+  host: "localhost",
+  database: "world",
+  password: "chained_86",
+  port: 5432,
+});
 
+db.connect();
+
+let quiz = [];
+
+db.query("SELECT * FROM flags", (err,res) => {
+  if (err) {
+    console.error("Error exicuting query", err.stack);
+  } else {
+    quiz = res.rows;
+  }
+  db.end();
+});
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
